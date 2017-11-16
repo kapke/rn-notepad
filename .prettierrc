@@ -1,0 +1,7 @@
+{
+    "tabWidth": 4,
+    "trailingComma": "all",
+    "parser": "flow",
+    "semi": false,
+    "singleQuote": true
+}

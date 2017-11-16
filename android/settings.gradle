@@ -1,0 +1,3 @@
+rootProject.name = 'rnNotepad'
+
+include ':app'

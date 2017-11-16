@@ -1,0 +1,22 @@
+{
+  "env": {
+    "es6": true
+  },
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "plugins": [
+    "prettier",
+    "fp",
+    "react"
+  ],
+  "extends": ["eslint:recommended", "plugin:fp/recommended", "plugin:react/recommended"],
+  "rules": {
+    "prettier/prettier": "error",
+    "react/prop-types": "off",
+    "react/display-name": "off"
+  }
+}
