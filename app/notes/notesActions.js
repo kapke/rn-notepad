@@ -12,3 +12,4 @@ export const dismissCurrentNoteChanges = Action('Notes/CurrentNote/Dismiss')
 export const removeCurrentNote = Action('Notes/CurrentNote/Remove')
 export const addCurrentNote = Action('Notes/CurrentNote/Add')
 export const cleanCurrentNote = Action('Notes/CurrentNote/Clean')
+export const startEditingCurrentNote = Action('Notes/CurrentNote/StartEditing');

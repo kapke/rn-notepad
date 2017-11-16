@@ -13,6 +13,7 @@ import {
     removeCurrentNote,
     cleanCurrentNote,
     addCurrentNote,
+    startEditingCurrentNote,
 } from './notesActions'
 
 const NotesState = Record({
@@ -34,6 +35,7 @@ export const notesReducer = Reducer(
                 .set('currentNote', action.payload),
         [changeCurrentNoteMode.type]: state =>
             state.update('editingCurrentNote', editing => !editing),
+        [startEditingCurrentNote.type]: state => state.set('editingCurrentNote', true),
         [changeCurrentNote.type]: (state, { payload: { content } }) =>
             state.update('currentNote', R.set(title, content)),
         [saveCurrentNoteChanges.type]: state =>

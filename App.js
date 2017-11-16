@@ -17,7 +17,7 @@ import { CurrentNoteEditBtn } from '/notes/containers/CurrentNoteEditBtn'
 import { Store } from '/store'
 import { uiReducer, uiEpic } from '/ui'
 import { NewNoteSaveBtn } from '/notes/containers/NewNoteSaveBtn'
-import { cleanCurrentNote } from '/notes/notesActions'
+import { cleanCurrentNote, startEditingCurrentNote } from '/notes/notesActions'
 
 const store = Store(
     combineReducers({
@@ -27,7 +27,10 @@ const store = Store(
     uiEpic,
 )
 
-const boundActions = bindActionCreators({ cleanCurrentNote }, store.dispatch)
+const boundActions = bindActionCreators(
+    { cleanCurrentNote, startEditingCurrentNote },
+    store.dispatch,
+)
 
 const AppNavigator = StackNavigator(
     {
@@ -49,14 +52,28 @@ const AppNavigator = StackNavigator(
             screen: Note,
             navigationOptions: ({ navigation }) => ({
                 title: 'New note',
-                headerRight: boundActions.cleanCurrentNote() && (
-                    <NewNoteSaveBtn onSave={navigation.goBack} />
-                ),
+                headerRight: <NewNoteSaveBtn onSave={navigation.goBack} />,
             }),
         },
     },
     {
         initialRouteName: 'Notes',
+        onTransitionStart(to) {
+            if (to.scene.route.routeName === 'NewNote') {
+                return boundActions.cleanCurrentNote()
+            } else {
+                return true
+            }
+        },
+        onTransitionEnd(to, from) {
+            if (to.scene.route.routeName === 'NewNote') {
+                return Promise.resolve().then(
+                    boundActions.startEditingCurrentNote,
+                )
+            } else {
+                return true
+            }
+        },
     },
 )
 
