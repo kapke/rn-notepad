@@ -9,4 +9,13 @@ export const note = (id, state) => notesState(state).notes.get(id)
 
 export const currentNote = R.pipe(notesState, R.prop('currentNote'))
 
-export const editingCurrentNote = R.pipe(currentNote, R.prop('editing'))
+export const editingCurrentNote = R.pipe(
+    notesState,
+    R.prop('editingCurrentNote'),
+)
+
+export const currentNoteState = state =>
+    R.zipObj(
+        ['note', 'editing'],
+        [currentNote, editingCurrentNote].map(fn => fn(state)),
+    )

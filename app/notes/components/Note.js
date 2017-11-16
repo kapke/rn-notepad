@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { View, StyleSheet, TouchableHighlight, TextInput } from 'react-native'
 
-import { Text } from '/ui/Text'
+import { Text } from '/ui'
 
 const styles = StyleSheet.create({
     container: {

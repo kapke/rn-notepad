@@ -16,7 +16,7 @@ export const statusBarHeight$ = () =>
               pluck('frame', 'height'),
               startWith(20),
           )
-        : of(20)
+        : of(0)
 
 export const StatusBarPlaceholder = ({ statusBarHeight }) => (
     <View style={{ height: statusBarHeight }} />

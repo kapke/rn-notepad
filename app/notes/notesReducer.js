@@ -15,70 +15,54 @@ import {
     addCurrentNote,
 } from './notesActions'
 
-const CurrentNote = Record({
-    note: new Note(),
-    editing: false,
-})
-
-const toggledEditing = currentNote =>
-    currentNote.update('editing', editing => !editing)
-
-const disableEditing = currentNote => currentNote.set('editing', false)
-
-const dismissChanges = originalNoteGetter => currentNote =>
-    currentNote
-        .set('editing', false)
-        .set('note', originalNoteGetter(R.view(id, currentNote.note)))
-
-const cleanNote = new CurrentNote({ editing: true, note: new Note() })
-
 const NotesState = Record({
     notes: [],
-    currentNote: CurrentNote(),
+    currentNote: new Note(),
+    editingCurrentNote: false,
 })
 
 const setNote = note => notes => notes.set(R.view(id, note), note)
 
-const currentNote = R.lensPath(['currentNote', 'note'])
+const currentNote = R.lensPath(['currentNote'])
 const currentNoteId = R.compose(currentNote, id)
 
 export const notesReducer = Reducer(
     {
         [setCurrentNote.type]: (state, action) =>
-            state.set(
-                'currentNote',
-                CurrentNote({ note: action.payload, editing: false }),
-            ),
+            state
+                .set('editingCurrentNote', false)
+                .set('currentNote', action.payload),
         [changeCurrentNoteMode.type]: state =>
-            state.update('currentNote', toggledEditing),
+            state.update('editingCurrentNote', editing => !editing),
         [changeCurrentNote.type]: (state, { payload: { content } }) =>
-            state.update('currentNote', currentNote =>
-                currentNote.update('note', R.set(title, content)),
-            ),
+            state.update('currentNote', R.set(title, content)),
         [saveCurrentNoteChanges.type]: state =>
             state
-                .update('currentNote', disableEditing)
+                .set('editingCurrentNote', false)
                 .update('notes', setNote(R.view(currentNote, state))),
         [dismissCurrentNoteChanges.type]: state =>
-            state.set('currentNote', dismissChanges(state.notes.get)),
+            state
+                .set('editingCurrentNote', false)
+                .update('currentNote', currentNote =>
+                    state.notes.get(R.view(id, currentNote)),
+                ),
         [removeCurrentNote.type]: state =>
             state.update('notes', notes =>
                 notes.delete(R.view(currentNoteId, state)),
             ),
-        [cleanCurrentNote.type]: state => state.set('currentNote', cleanNote),
+        [cleanCurrentNote.type]: state => state.set('currentNote', new Note()),
         [addCurrentNote.type]: state =>
             state.update(
                 'notes',
                 setNote(withNewId(R.view(currentNote, state))),
             ),
     },
-    NotesState({
+    new NotesState({
         notes: [
             new Note({ id: 'foo', title: 'foo' }),
             new Note({ id: 'bar', title: 'bar' }),
             new Note({ id: 'baz', title: 'baz' }),
             new Note({ id: 'foo2', title: 'foo2' }),
         ].reduce((acc, note) => acc.set(note.id, note), Map()),
-        currentNote: CurrentNote(),
     }),
 )

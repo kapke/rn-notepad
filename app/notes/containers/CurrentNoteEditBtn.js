@@ -4,7 +4,7 @@ import { TouchableOpacity, View, StyleSheet } from 'react-native'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { currentNote } from '../notesSelectors'
+import { currentNoteState } from '../notesSelectors'
 import {
     changeCurrentNoteMode,
     dismissCurrentNoteChanges,
@@ -29,18 +29,16 @@ const styles = StyleSheet.create({
     },
 })
 
-export const CurrentNoteEditBtn = connect(
-    state => currentNote(state).toObject(),
-    dispatch =>
-        bindActionCreators(
-            {
-                changeCurrentNoteMode,
-                saveCurrentNoteChanges,
-                dismissCurrentNoteChanges,
-                removeCurrentNote,
-            },
-            dispatch,
-        ),
+export const CurrentNoteEditBtn = connect(currentNoteState, dispatch =>
+    bindActionCreators(
+        {
+            changeCurrentNoteMode,
+            saveCurrentNoteChanges,
+            dismissCurrentNoteChanges,
+            removeCurrentNote,
+        },
+        dispatch,
+    ),
 )(
     ({
         editing,
