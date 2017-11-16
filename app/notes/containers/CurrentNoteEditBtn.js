@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Icon } from 'native-base'
-import { TouchableOpacity, View, StyleSheet } from 'react-native'
+import { TouchableOpacity, View, StyleSheet, Platform } from 'react-native'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
@@ -13,12 +13,14 @@ import {
 } from '../notesActions'
 
 const styles = StyleSheet.create({
-    smallIcon: {
-        fontSize: 40,
-    },
-    bigIcon: {
-        fontSize: 27,
-    },
+    smallIcon: Platform.select({
+        ios: { fontSize: 40 },
+        android: { fontSize: 20 },
+    }),
+    bigIcon: Platform.select({
+        ios: { fontSize: 27 },
+        android: { fontSize: 20 },
+    }),
     iconWrapper: {
         marginHorizontal: 4,
     },
@@ -80,7 +82,7 @@ export const CurrentNoteEditBtn = connect(currentNoteState, dispatch =>
                 >
                     <Icon
                         ios="ios-create-outline"
-                        android="md-pencil"
+                        android="md-create"
                         style={styles.bigIcon}
                     />
                 </TouchableOpacity>

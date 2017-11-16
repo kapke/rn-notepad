@@ -4,17 +4,10 @@
  * @flow
  */
 
-import React, { Component } from 'react'
-import {
-    Platform,
-    StatusBar,
-    StyleSheet,
-    Text,
-    View,
-    StatusBarIOS,
-} from 'react-native'
+import * as React from 'react'
+import { StyleSheet, View } from 'react-native'
 import { Provider } from 'react-redux'
-import { StackNavigator, StackRouter } from 'react-navigation'
+import { StackNavigator } from 'react-navigation'
 import { bindActionCreators, combineReducers } from 'redux'
 
 import { notesReducer } from '/notes/notesReducer'
@@ -22,7 +15,7 @@ import { Notes } from '/notes/screens/Notes'
 import { Note } from '/notes/screens/Note'
 import { CurrentNoteEditBtn } from '/notes/containers/CurrentNoteEditBtn'
 import { Store } from '/store'
-import { StatusBarPlaceholderContainer, uiReducer, uiEpic } from '/ui'
+import { uiReducer, uiEpic } from '/ui'
 import { NewNoteSaveBtn } from '/notes/containers/NewNoteSaveBtn'
 import { cleanCurrentNote } from '/notes/notesActions'
 
