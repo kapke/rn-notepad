@@ -8,11 +8,14 @@ import * as React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Provider } from 'react-redux'
 import { StackNavigator } from 'react-navigation'
-import { bindActionCreators, combineReducers } from 'redux'
+import { bindActionCreators } from 'redux'
+import { persistStore } from 'redux-persist'
+import { PersistGate } from 'redux-persist/lib/integration/react'
 
 import { notesReducer } from '/notes/notesReducer'
 import { Notes } from '/notes/screens/Notes'
 import { Note } from '/notes/screens/Note'
+
 import { CurrentNoteEditBtn } from '/notes/containers/CurrentNoteEditBtn'
 import { Store } from '/store'
 import { uiReducer, uiEpic } from '/ui'
@@ -20,12 +23,14 @@ import { NewNoteSaveBtn } from '/notes/containers/NewNoteSaveBtn'
 import { cleanCurrentNote, startEditingCurrentNote } from '/notes/notesActions'
 
 const store = Store(
-    combineReducers({
+    {
         notes: notesReducer,
         ui: uiReducer,
-    }),
+    },
     uiEpic,
 )
+
+const storePersistor = persistStore(store)
 
 const boundActions = bindActionCreators(
     { cleanCurrentNote, startEditingCurrentNote },
@@ -79,11 +84,13 @@ const AppNavigator = StackNavigator(
 
 export default function App() {
     return (
-        <Provider store={store}>
-            <View style={styles.container}>
-                <AppNavigator />
-            </View>
-        </Provider>
+        <PersistGate persistor={storePersistor}>
+            <Provider store={store}>
+                <View style={styles.container}>
+                    <AppNavigator />
+                </View>
+            </Provider>
+        </PersistGate>
     )
 }
 

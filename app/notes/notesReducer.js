@@ -1,4 +1,3 @@
-import { Map, Record } from 'immutable'
 import * as R from 'ramda'
 
 import { Reducer } from '/store'
@@ -16,55 +15,58 @@ import {
     startEditingCurrentNote,
 } from './notesActions'
 
-const NotesState = Record({
-    notes: [],
-    currentNote: new Note(),
-    editingCurrentNote: false,
-})
-
-const setNote = note => notes => notes.set(R.view(id, note), note)
+const setNote = note => notes => R.assoc(R.view(id, note), note, notes)
 
 const currentNote = R.lensPath(['currentNote'])
 const currentNoteId = R.compose(currentNote, id)
 
 export const notesReducer = Reducer(
     {
-        [setCurrentNote.type]: (state, action) =>
-            state
-                .set('editingCurrentNote', false)
-                .set('currentNote', action.payload),
-        [changeCurrentNoteMode.type]: state =>
-            state.update('editingCurrentNote', editing => !editing),
-        [startEditingCurrentNote.type]: state => state.set('editingCurrentNote', true),
-        [changeCurrentNote.type]: (state, { payload: { content } }) =>
-            state.update('currentNote', R.set(title, content)),
-        [saveCurrentNoteChanges.type]: state =>
-            state
-                .set('editingCurrentNote', false)
-                .update('notes', setNote(R.view(currentNote, state))),
-        [dismissCurrentNoteChanges.type]: state =>
-            state
-                .set('editingCurrentNote', false)
-                .update('currentNote', currentNote =>
-                    state.notes.get(R.view(id, currentNote)),
-                ),
-        [removeCurrentNote.type]: state =>
-            state.update('notes', notes =>
-                notes.delete(R.view(currentNoteId, state)),
-            ),
-        [cleanCurrentNote.type]: state => state.set('currentNote', new Note()),
-        [addCurrentNote.type]: state =>
-            state.update(
-                'notes',
-                setNote(withNewId(R.view(currentNote, state))),
-            ),
+        [setCurrentNote.type]: (state, action) => ({
+            ...state,
+            editingCurrentNote: false,
+            currentNote: action.payload,
+        }),
+        [changeCurrentNoteMode.type]: state => ({
+            ...state,
+            editingCurrentNote: !state.editingCurrentNote,
+        }),
+        [startEditingCurrentNote.type]: R.assoc('editingCurrentNote', true),
+        [changeCurrentNote.type]: (state, { payload: { content } }) => ({
+            ...state,
+            currentNote: R.set(title, content, state.currentNote),
+        }),
+        [saveCurrentNoteChanges.type]: state => ({
+            ...state,
+            editingCurrentNote: false,
+            notes: setNote(R.view(currentNote, state))(state.notes),
+        }),
+        [dismissCurrentNoteChanges.type]: state => ({
+            ...state,
+            editingCurrentNote: false,
+            currentNote: state.notes[R.view(id, state.currentNote)],
+        }),
+        [removeCurrentNote.type]: state => ({
+            ...state,
+            notes: R.dissoc(R.view(currentNoteId, state), state.notes),
+        }),
+        [cleanCurrentNote.type]: state => ({
+            ...state,
+            currentNote: new Note(),
+        }),
+        [addCurrentNote.type]: state => ({
+            ...state,
+            notes: setNote(withNewId(R.view(currentNote, state)))(state.notes),
+        }),
     },
-    new NotesState({
+    {
         notes: [
             new Note({ id: 'foo', title: 'foo' }),
             new Note({ id: 'bar', title: 'bar' }),
             new Note({ id: 'baz', title: 'baz' }),
             new Note({ id: 'foo2', title: 'foo2' }),
-        ].reduce((acc, note) => acc.set(note.id, note), Map()),
-    }),
+        ].reduce((acc, note) => ({ ...acc, [note.id]: note }), {}),
+        editingNote: false,
+        currentNote: new Note(),
+    },
 )

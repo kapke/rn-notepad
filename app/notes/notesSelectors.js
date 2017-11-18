@@ -1,11 +1,10 @@
-import { List } from 'immutable'
 import * as R from 'ramda'
 
 export const notesState = R.prop('notes')
 
-export const notes = state => List(notesState(state).notes.values())
+export const notes = state => Object.values(notesState(state).notes)
 
-export const note = (id, state) => notesState(state).notes.get(id)
+export const note = (id, state) => notesState(state).notes[id]
 
 export const currentNote = R.pipe(notesState, R.prop('currentNote'))
 

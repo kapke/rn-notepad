@@ -10,7 +10,7 @@ const renderNote = onNotePress => ({ item: note }) => (
 
 export const NotesList = ({ notes, onNotePress }) => (
     <FlatList
-        data={notes.toArray()}
+        data={notes}
         renderItem={renderNote(onNotePress)}
         keyExtractor={R.prop('id')}
     />

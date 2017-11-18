@@ -1,9 +1,25 @@
 import { createStore, applyMiddleware } from 'redux'
-import * as R from 'ramda'
 import { createEpicMiddleware } from 'redux-observable'
+import storage from 'redux-persist/es/storage'
+import { persistCombineReducers } from 'redux-persist'
+import { createFilter } from 'redux-persist-transform-filter'
 
 export { Reducer } from './Reducer'
 export { Action } from './Action'
 
-export const Store = (reducer, epic) =>
-    createStore(reducer, R.pipe(createEpicMiddleware, applyMiddleware)(epic))
+export const Store = (reducers, epic) => {
+    const middleware = applyMiddleware(createEpicMiddleware(epic))
+
+    const persistenceConfig = {
+        key: 'notepad_data',
+        storage,
+        transforms: [
+            createFilter('ui', []), //eslint-disable-line fp/no-nil
+        ],
+    }
+
+    return createStore(
+        persistCombineReducers(persistenceConfig, reducers),
+        middleware,
+    )
+}
