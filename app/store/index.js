@@ -7,8 +7,10 @@ import { createFilter } from 'redux-persist-transform-filter'
 export { Reducer } from './Reducer'
 export { Action } from './Action'
 
-export const Store = (reducers, epic) => {
-    const middleware = applyMiddleware(createEpicMiddleware(epic))
+export const Store = (reducers, epic, services) => {
+    const middleware = applyMiddleware(
+        createEpicMiddleware(epic, { dependencies: services }),
+    )
 
     const persistenceConfig = {
         key: 'notepad_data',

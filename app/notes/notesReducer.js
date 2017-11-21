@@ -9,19 +9,28 @@ import {
     changeCurrentNote,
     saveCurrentNoteChanges,
     dismissCurrentNoteChanges,
-    removeCurrentNote,
     cleanCurrentNote,
     addCurrentNote,
     startEditingCurrentNote,
+    setNotes,
+    setNote as setNoteAction,
 } from './notesActions'
+import { arrToObj } from '../util'
 
 const setNote = note => notes => R.assoc(R.view(id, note), note, notes)
 
 const currentNote = R.lensPath(['currentNote'])
-const currentNoteId = R.compose(currentNote, id)
 
 export const notesReducer = Reducer(
     {
+        [setNotes.type]: (state, action) => ({
+            ...state,
+            notes: arrToObj(R.view(id), action.payload.notes),
+        }),
+        [setNoteAction.type]: (state, action) => ({
+            ...state,
+            notes: setNote(action.payload.note)(state.notes),
+        }),
         [setCurrentNote.type]: (state, action) => ({
             ...state,
             editingCurrentNote: false,
@@ -46,10 +55,6 @@ export const notesReducer = Reducer(
             editingCurrentNote: false,
             currentNote: state.notes[R.view(id, state.currentNote)],
         }),
-        [removeCurrentNote.type]: state => ({
-            ...state,
-            notes: R.dissoc(R.view(currentNoteId, state), state.notes),
-        }),
         [cleanCurrentNote.type]: state => ({
             ...state,
             currentNote: new Note(),
@@ -60,12 +65,7 @@ export const notesReducer = Reducer(
         }),
     },
     {
-        notes: [
-            new Note({ id: 'foo', title: 'foo' }),
-            new Note({ id: 'bar', title: 'bar' }),
-            new Note({ id: 'baz', title: 'baz' }),
-            new Note({ id: 'foo2', title: 'foo2' }),
-        ].reduce((acc, note) => ({ ...acc, [note.id]: note }), {}),
+        notes: {},
         editingNote: false,
         currentNote: new Note(),
     },
