@@ -1,0 +1,33 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'rnNotepad' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for rnNotepad
+  pod 'AppCenter/Crashes', '~> 1.0.1'
+  pod 'AppCenter/Analytics', '~> 1.0.1'
+  pod 'AppCenterReactNativeShared', '~> 1.0.1'
+
+  
+
+  target 'rnNotepadTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
+
+target 'rnNotepad-tvOS' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for rnNotepad-tvOS
+
+  target 'rnNotepad-tvOSTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end

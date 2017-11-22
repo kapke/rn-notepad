@@ -1,6 +1,7 @@
 {
   "env": {
-    "es6": true
+    "es6": true,
+    "jest": true
   },
   "parser": "babel-eslint",
   "parserOptions": {
@@ -11,9 +12,10 @@
   "plugins": [
     "prettier",
     "fp",
-    "react"
+    "react",
+    "jest"
   ],
-  "extends": ["eslint:recommended", "plugin:fp/recommended", "plugin:react/recommended"],
+  "extends": ["eslint:recommended", "plugin:fp/recommended", "plugin:react/recommended", "plugin:jest/recommended"],
   "rules": {
     "prettier/prettier": "error",
     "react/prop-types": "off",

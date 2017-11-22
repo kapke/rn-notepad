@@ -1,10 +1,7 @@
-import 'react-native'
-import React from 'react'
-import App from '../App'
+/* eslint-disable fp/no-unused-expression, fp/no-nil */
 
-// Note: test renderer must be required after react-native.
-import renderer from 'react-test-renderer'
-
-it('renders correctly', () => {
-    const tree = renderer.create(<App />)
+describe('foo', () => {
+    it('is true', () => {
+        expect('foo').toBe('foo')
+    })
 })
