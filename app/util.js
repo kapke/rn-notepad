@@ -6,4 +6,11 @@ export const arrToObj = (key, arr) =>
 
 export const log = (...args) => console.log(...args) //eslint-disable-line
 
-export const tapLog = (tag = '') => data$ => data$.pipe(tap(a => log(tag, 'next', a), a => log(tag, 'error', a), a => log(tag, 'complete', a)))
+export const tapLog = (tag = '') => data$ =>
+    data$.pipe(
+        tap(
+            a => log(tag, 'next', a),
+            a => log(tag, 'error', a),
+            a => log(tag, 'complete', a),
+        ),
+    )

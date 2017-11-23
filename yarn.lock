@@ -3520,6 +3520,10 @@ minimist@^1.1.0, minimist@^1.1.1, minimist@^1.2.0, minimist@~1.2.0:
   dependencies:
     minimist "0.0.8"
 
+monet@^0.8.10:
+  version "0.8.10"
+  resolved "https://registry.yarnpkg.com/monet/-/monet-0.8.10.tgz#af82af50591466f78baf97c053e2ffe5e9108224"
+
 morgan@~1.6.1:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/morgan/-/morgan-1.6.1.tgz#5fd818398c6819cba28a7cd6664f292fe1c0bbf2"
@@ -4153,6 +4157,10 @@ react-native-easy-grid@0.1.15:
     create-react-class "^15.6.0"
     prop-types "^15.5.10"
     react-timer-mixin "^0.13.3"
+
+react-native-maps@^0.17.1:
+  version "0.17.1"
+  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.17.1.tgz#ab2236341fd984dac8864202ae55331bc262f60c"
 
 react-native-tab-view@^0.0.70:
   version "0.0.70"

@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { View, StyleSheet, TouchableHighlight, TextInput } from 'react-native'
+import MapView from 'react-native-maps'
 
 import { Text } from '/ui'
 
@@ -22,25 +23,33 @@ const styles = StyleSheet.create({
     },
 })
 
-export const Note = ({
+const EditingNote = ({
     note,
-    onPress,
     onChange,
-    style = {},
-    editing = false,
-}) => (
-    <TouchableHighlight onPress={onPress} style={[styles.container, style]}>
-        <View>
-            {editing ? (
-                <TextInput
-                    value={note.title}
-                    onChangeText={onChange}
-                    autoFocus={true}
-                    multiline={true}
-                />
-            ) : (
-                <Text>{note.title}</Text>
-            )}
-        </View>
-    </TouchableHighlight>
-)
+}) => [
+    <TextInput
+        key="input"
+        value={note.title}
+        onChangeText={onChange}
+        autoFocus={true}
+        multiline={true}
+    />,
+    <MapView key="map" />,
+]
+
+export const Note = props => {
+    const { note, onPress, style = {}, editing = false } = props
+    console.log(<EditingNote {...props} />)
+
+    return (
+        <TouchableHighlight onPress={onPress} style={[styles.container, style]}>
+            <View>
+                {editing ? (
+                    <EditingNote {...props} />
+                ) : (
+                    <Text>{note.title}</Text>
+                )}
+            </View>
+        </TouchableHighlight>
+    )
+}

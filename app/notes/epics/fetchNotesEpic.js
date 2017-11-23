@@ -34,6 +34,7 @@ export const fetchNotesEpic = (action$, store, { apolloClient }) =>
                 fetchPolicy: 'network-only',
             }),
         ),
+        tapLog('fetchedNotes'),
         map(data => R.view(noteEdgesLens, data).map(R.view(noteFromEdgeLens))),
         map(notes => setNotes({ notes })),
     )

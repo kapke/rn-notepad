@@ -4,7 +4,7 @@ import gql from 'graphql-tag'
 
 import { currentNoteState } from '../notesSelectors'
 import { addCurrentNote, fetchNotes } from '../notesActions'
-import {tapLog} from "../../util";
+import { tapLog } from '../../util'
 
 const createNote = gql`
     mutation CreateNote($input: CreateNoteInput!) {
