@@ -4,7 +4,8 @@
 	"private": true,
 	"scripts": {
 		"start": "node node_modules/react-native/local-cli/cli.js start",
-		"test": "jest",
+		"test": "yarn lint && jest",
+		"test:watch": "jest --watch",
 		"lint": "eslint --config .eslintrc.json ./app ./App.js ./index.js",
 		"lint:fix": "yarn lint --fix"
 	},
