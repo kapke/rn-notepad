@@ -16,7 +16,6 @@ import { HttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { ApolloProvider } from 'react-apollo'
 import { combineEpics } from 'redux-observable'
-import MapView from 'react-native-maps'
 
 import { notesReducer } from '/notes/notesReducer'
 import { Notes } from '/notes/screens/Notes'
@@ -83,14 +82,9 @@ const AppNavigator = StackNavigator(
                 headerRight: <NewNoteSaveBtn onSave={navigation.goBack} />,
             }),
         },
-        Map: {
-            screen () {
-                return <MapView style={styles.container} />
-            }
-        }
     },
     {
-        initialRouteName: 'Map',
+        initialRouteName: 'Notes',
         onTransitionStart(to) {
             if (to.scene.route.routeName === 'NewNote') {
                 return boundActions.cleanCurrentNote()

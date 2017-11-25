@@ -3,8 +3,10 @@ import * as R from 'ramda'
 import { Maybe } from 'monet'
 
 const emptyNote = { id: '', title: '', location: Maybe.None() }
-export function Note(data) {
-    return Object.assign({}, emptyNote, data)
+export function Note(data = {}) {
+    return Object.assign({}, emptyNote, data, {
+        location: data.location ? Maybe.Some(data.location) : Maybe.None(),
+    })
 }
 
 export const id = R.lensPath(['id'])

@@ -1,17 +1,19 @@
 import * as R from 'ramda'
+import { Maybe } from 'monet'
 
 import { Reducer } from '/store'
 
-import { id, Note, title, withNewId } from './Note'
+import { id, Note, title, withNewId, location } from './Note'
 import {
     changeCurrentNoteMode,
     setCurrentNote,
-    changeCurrentNote,
+    changeCurrentNoteText,
     saveCurrentNoteChanges,
     dismissCurrentNoteChanges,
     cleanCurrentNote,
     addCurrentNote,
     startEditingCurrentNote,
+    changeCurrentNoteLocation,
     setNotes,
     setNote as setNoteAction,
 } from './notesActions'
@@ -41,9 +43,20 @@ export const notesReducer = Reducer(
             editingCurrentNote: !state.editingCurrentNote,
         }),
         [startEditingCurrentNote.type]: R.assoc('editingCurrentNote', true),
-        [changeCurrentNote.type]: (state, { payload: { content } }) => ({
+        [changeCurrentNoteText.type]: (state, { payload: { content } }) => ({
             ...state,
             currentNote: R.set(title, content, state.currentNote),
+        }),
+        [changeCurrentNoteLocation.type]: (
+            state,
+            { payload: { coordinate } },
+        ) => ({
+            ...state,
+            currentNote: R.set(
+                location,
+                Maybe.Some(coordinate),
+                state.currentNote,
+            ),
         }),
         [saveCurrentNoteChanges.type]: state => ({
             ...state,

@@ -1,10 +1,11 @@
 import { ofType } from 'redux-observable'
-import { mergeMap, map, ignoreElements, mapTo, delay } from 'rxjs/operators'
+import { mergeMap, map, mapTo } from 'rxjs/operators'
 import gql from 'graphql-tag'
 import * as R from 'ramda'
 
 import { saveCurrentNoteChanges, fetchNotes } from '../notesActions'
 import { currentNoteState } from '../notesSelectors'
+import { serializeNote } from '../serialization'
 
 const updateNote = gql`
     mutation UpdateNote($input: UpdateNoteInput!) {
@@ -25,7 +26,12 @@ export const saveCurrentNoteEpic = (action$, store, { apolloClient }) =>
         mergeMap(({ note }) => {
             return apolloClient.mutate({
                 mutation: updateNote,
-                variables: { input: R.pick(['id', 'title'], note) },
+                variables: {
+                    input: R.pick(
+                        ['id', 'title', 'location'],
+                        serializeNote(note),
+                    ),
+                },
             })
         }),
         mapTo(fetchNotes()),

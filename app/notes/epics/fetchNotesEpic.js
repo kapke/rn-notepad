@@ -1,10 +1,11 @@
 import { ofType } from 'redux-observable'
-import { concatMap, switchMap, map } from 'rxjs/operators'
+import { switchMap, map } from 'rxjs/operators'
 import * as R from 'ramda'
 import gql from 'graphql-tag'
 
 import { fetchNotes, setNotes } from '../notesActions'
 import { tapLog } from '../../util'
+import { deserializeNote } from '../serialization'
 
 const NotesQuery = gql`
     query NotesQuery {
@@ -15,6 +16,7 @@ const NotesQuery = gql`
                     node {
                         id
                         title
+                        location
                     }
                 }
             }
@@ -36,5 +38,6 @@ export const fetchNotesEpic = (action$, store, { apolloClient }) =>
         ),
         tapLog('fetchedNotes'),
         map(data => R.view(noteEdgesLens, data).map(R.view(noteFromEdgeLens))),
+        map(notes => notes.map(deserializeNote)),
         map(notes => setNotes({ notes })),
     )

@@ -4,12 +4,17 @@ import { bindActionCreators } from 'redux'
 import { Note as NoteComponent } from '../components/Note'
 
 import { currentNoteState } from '../notesSelectors'
-import { changeCurrentNote } from '../notesActions'
+import {
+    changeCurrentNoteLocation,
+    changeCurrentNoteText,
+} from '../notesActions'
 
 export const CurrentNote = connect(currentNoteState, dispatch =>
     bindActionCreators(
         {
-            onChange: content => changeCurrentNote({ content }),
+            onChange: content => changeCurrentNoteText({ content }),
+            onLocationChange: coordinate =>
+                changeCurrentNoteLocation({ coordinate }),
         },
         dispatch,
     ),

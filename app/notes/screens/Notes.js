@@ -3,8 +3,6 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { View } from 'react-native'
 import { Fab, Icon } from 'native-base'
-import { graphql } from 'react-apollo'
-import gql from 'graphql-tag'
 import * as R from 'ramda'
 
 import { NotesList } from '../components/NotesList'

@@ -6,7 +6,10 @@ export const setNote = Action('Notes/SetSingle')
 
 export const setCurrentNote = Action('Notes/CurrentNote/Set')
 export const changeCurrentNoteMode = Action('Notes/CurrentNote/ChangeMode')
-export const changeCurrentNote = Action('Notes/CurrentNote/Change')
+export const changeCurrentNoteText = Action('Notes/CurrentNote/ChangeText')
+export const changeCurrentNoteLocation = Action(
+    'Notes/CurrentNote/ChangeLocation',
+)
 export const saveCurrentNoteChanges = Action('Notes/CurrentNote/Save')
 export const dismissCurrentNoteChanges = Action('Notes/CurrentNote/Dismiss')
 export const removeCurrentNote = Action('Notes/CurrentNote/Remove')
